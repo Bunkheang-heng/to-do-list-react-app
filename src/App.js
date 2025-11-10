@@ -1,11 +1,16 @@
 import React from 'react'
+import {BrowserRouter as Router, Routes, Route} from 'react-router-dom'
+//Import pages 
+import Home from './pages/Home';
+import Login from './pages/Login';
 
 export default function App() {
   return (
-    <div>
-      <h1>Hello World</h1>
-      <p>This is a paragraph</p>
-      <button>Click me</button>
-    </div>
-  );
+   <Router>
+    <Routes>
+      <Route path="/" element={<Home />} />
+      <Route path="/login" element={<Login />} />
+    </Routes>
+   </Router>
+  )
 }
