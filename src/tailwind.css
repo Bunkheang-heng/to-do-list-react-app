@@ -1,23 +1,16 @@
 @import "tailwindcss";
 
-/* LIGHT + DARK THEME */
 @theme {
-  /* Brand Color */
   --color-accent: #FF6F0C;
-
-  /* Light Mode */
   --color-bg: #ffffff;
   --color-bg-alt: #f5f5f5;
   --color-text: #1e1e1e;
   --color-subtle: #7a7a7a;
-
   --radius-card: 16px;
   --radius-btn: 8px;
-
   --font-display: "Inter", "Roboto", sans-serif;
 }
 
-/* DARK MODE OVERRIDES */
 @theme dark {
   --color-bg: #0f0f0f;
   --color-bg-alt: #161616;
