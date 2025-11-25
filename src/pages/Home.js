@@ -4,14 +4,56 @@ import FooterNav from "../components/FooterNav";
 const Home = () => {
   return (
     <section className="flex flex-col gap-6">
-      <h2 className="text-2xl font-semibold tracking-tight text-accent">Home</h2>
+
+      {/* Title */}
+      <h2 className="text-2xl font-semibold tracking-tight text-accent">
+        Home
+      </h2>
+
+      {/* Search Bar */}
       <div className="relative">
-        <input className="w-full rounded-[var(--radius-btn)] border border-slate-300 dark:border-slate-600 bg-white dark:bg-bg-alt text-text dark:text-text px-4 py-2.5 pl-10 shadow-sm" placeholder="Search tasks..." />
-        <i className="fas fa-search absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
+        <input
+          className="
+            w-full
+            rounded-[var(--radius-btn)]
+            border border-[var(--color-box-bg)]
+            bg-[var(--color-box-bg)]
+            text-[var(--color-text)]
+            placeholder:text-[var(--color-subtle)]
+            px-4 py-2.5 pl-10
+            shadow-sm
+            transition-colors duration-300
+          "
+          placeholder="Search tasks..."
+        />
+        <i
+          className="
+            fas fa-search
+            absolute left-3 top-1/2 -translate-y-1/2
+            text-[var(--color-subtle)]
+            transition-colors duration-300
+          "
+        />
       </div>
-      <p className="text-subtle dark:text-subtle">[Placeholder content]</p>
+
+      {/* Example Card */}
+      <div
+        className="
+          rounded-[var(--radius-card)]
+          bg-[var(--color-box-bg)]
+          text-[var(--color-text)]
+          border border-[var(--color-box-bg)]
+          shadow-md
+          p-4
+          transition-colors duration-300
+        "
+      >
+        <p>Orange UI test</p>
+      </div>
+
       <FooterNav />
     </section>
   );
 };
+
 export default Home;
