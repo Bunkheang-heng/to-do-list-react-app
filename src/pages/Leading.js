@@ -175,36 +175,68 @@ export default function Leading() {
           </div>
         </div>
 
-        <Link
-          to="/task"
-          style={{
-            fontSize: "1.1em",
-            textDecoration: "none",
-            padding: "14px 36px",
-            borderRadius: "50px",
-            letterSpacing: "0.5px",
-            background: "#ff6b35",
-            color: "white",
-            fontWeight: 700,
-            display: "flex",
-            alignItems: "center",
-            gap: "10px",
-            boxShadow: "0 4px 15px rgba(255, 107, 53, 0.3)",
-            transition: "all 0.3s ease",
-            border: "none",
-            cursor: "pointer",
-          }}
-          onMouseEnter={(e) => {
-            e.currentTarget.style.transform = "translateY(-2px)";
-            e.currentTarget.style.boxShadow = "0 6px 20px rgba(255, 107, 53, 0.4)";
-          }}
-          onMouseLeave={(e) => {
-            e.currentTarget.style.transform = "translateY(0)";
-            e.currentTarget.style.boxShadow = "0 4px 15px rgba(255, 107, 53, 0.3)";
-          }}
-        >
-          <FaRocket /> Get Started
-        </Link>
+        <div style={{ display: "flex", gap: "16px", flexWrap: "wrap", justifyContent: "center" }}>
+          <Link
+            to="/register"
+            style={{
+              fontSize: "1.1em",
+              textDecoration: "none",
+              padding: "14px 36px",
+              borderRadius: "50px",
+              letterSpacing: "0.5px",
+              background: "#ff6b35",
+              color: "white",
+              fontWeight: 700,
+              display: "flex",
+              alignItems: "center",
+              gap: "10px",
+              boxShadow: "0 4px 15px rgba(255, 107, 53, 0.3)",
+              transition: "all 0.3s ease",
+              border: "none",
+              cursor: "pointer",
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.transform = "translateY(-2px)";
+              e.currentTarget.style.boxShadow = "0 6px 20px rgba(255, 107, 53, 0.4)";
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.transform = "translateY(0)";
+              e.currentTarget.style.boxShadow = "0 4px 15px rgba(255, 107, 53, 0.3)";
+            }}
+          >
+            <FaRocket /> Get Started
+          </Link>
+          
+          <Link
+            to="/login"
+            style={{
+              fontSize: "1.1em",
+              textDecoration: "none",
+              padding: "14px 36px",
+              borderRadius: "50px",
+              letterSpacing: "0.5px",
+              background: "white",
+              color: "#ff6b35",
+              fontWeight: 700,
+              display: "flex",
+              alignItems: "center",
+              gap: "10px",
+              border: "2px solid #ff6b35",
+              transition: "all 0.3s ease",
+              cursor: "pointer",
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.transform = "translateY(-2px)";
+              e.currentTarget.style.background = "#fff5f0";
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.transform = "translateY(0)";
+              e.currentTarget.style.background = "white";
+            }}
+          >
+            Sign In
+          </Link>
+        </div>
       </div>
       
       {/* Scroll Indicator */}
