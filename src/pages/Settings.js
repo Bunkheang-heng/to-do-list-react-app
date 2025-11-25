@@ -1,119 +1,75 @@
 import React from "react";
 import FooterNav from "../components/FooterNav";
-import "../index.css";
 
 const Settings = () => {
   return (
-    <section className="page" id="settings">
-      <div className="title">
-        <i className="fas fa-cog"></i> Settings
-      </div>
+    <section className="flex flex-col gap-6">
 
-      {/* USER INFO CARD */}
-      <div
-        className="box"
-        style={{
-          border: "3px solid var(--border)",
-          background: "var(--fill)",
-          marginBottom: "24px"
-        }}
-      >
-        <div style={{ display: "flex", alignItems: "center", gap: "20px" }}>
-          <div className="placeholder-img">
-            <i className="fas fa-user-circle"></i>
+      <h2 className="text-2xl font-semibold tracking-tight text-accent">
+        <i className="fas fa-cog mr-2" />
+        Settings
+      </h2>
+
+      <div className="grid gap-6 md:grid-cols-2">
+
+        {/* Profile card */}
+        <div className="rounded-[var(--radius-card)] bg-white shadow-md border border-slate-200 p-4">
+          <h3 className="text-sm font-semibold text-text">Profile</h3>
+          <p className="text-xs text-subtle mt-1">Manage your account.</p>
+
+          <div className="flex items-center gap-3 mt-4">
+            <div className="flex h-10 w-10 items-center justify-center bg-accent text-white rounded-full">
+              JD
+            </div>
+            <div>
+              <p className="text-sm font-medium text-text">Jane Doe</p>
+              <p className="text-xs text-subtle">jane@example.com</p>
+            </div>
           </div>
 
-          <div style={{ flex: 1 }}>
-            <strong
-              style={{
-                fontSize: "20px",
-                display: "block",
-                marginBottom: "8px"
-              }}
-            >
-              [USER NAME]
-            </strong>
+          <button className="mt-4 rounded-[var(--radius-btn)] border border-slate-200 text-sm px-3 py-1.5 hover:text-accent">
+            Edit Profile
+          </button>
+        </div>
 
-            <p style={{ margin: 0, fontSize: "14px", color: "var(--text-secondary)" }}>
-              [EMAIL] user@example.com
-            </p>
+        {/* Preferences card */}
+        <div className="rounded-[var(--radius-card)] bg-white shadow-md border border-slate-200 p-4">
+          <h3 className="text-sm font-semibold text-text">Preferences</h3>
+          <p className="text-xs text-subtle mt-1">Customize your experience.</p>
 
-            <p
-              style={{
-                margin: "8px 0 0 0",
-                fontSize: "12px",
-                color: "var(--text-secondary)"
-              }}
-            >
-              <i className="fas fa-calendar-check"></i> Member since [DATE]
-            </p>
-          </div>
+          <div className="space-y-3 mt-4 text-sm">
+            <div className="flex justify-between">
+              <span>Dark mode</span>
+              <span className="bg-slate-200 rounded-full px-3 py-1 text-xs">
+                <button
+                  onClick={() => {
+                    document.documentElement.classList.toggle("dark");
+                  }}
+                  className="rounded-[var(--radius-btn)] border border-slate-300 dark:border-slate-600 px-3 py-1 text-xs font-medium text-text dark:text-text"
+                >
+                  Toggle Dark Mode
+                </button>
 
-          <div>
-            <span
-              className="chip"
-              style={{
-                background: "var(--fg)",
-                color: "white",
-                border: "2px solid var(--fg)",
-                padding: "12px 24px",
-                fontWeight: 700
-              }}
-            >
-              <i className="fas fa-sign-out-alt"></i> LOG OUT
-            </span>
+              </span>
+            </div>
           </div>
         </div>
-      </div>
 
-      {/* SETTINGS OPTIONS */}
-      <div className="row">
-        <div className="col box">
-          <strong>
-            <i className="fas fa-user"></i> Profile
-          </strong>
-          <p style={{ margin: "8px 0 0 0", color: "var(--text-secondary)" }}>
-            Name, Email, Avatar
+        {/* Danger Zone */}
+        <div className="rounded-[var(--radius-card)] bg-red-50 border border-red-200 p-4">
+          <h3 className="text-sm font-semibold text-red-700">Danger Zone</h3>
+          <p className="text-xs text-red-600 mt-1">
+            Deleting your account is permanent.
           </p>
+
+          <button className="mt-4 rounded-[var(--radius-btn)] px-3 py-1.5 bg-red-600 text-white text-xs">
+            Delete Account
+          </button>
         </div>
 
-        <div className="col box">
-          <strong>
-            <i className="fas fa-palette"></i> Preferences
-          </strong>
-          <p style={{ margin: "8px 0 0 0", color: "var(--text-secondary)" }}>
-            Theme, Sort, Density
-          </p>
-        </div>
-
-        <div className="col box">
-          <strong>
-            <i className="fas fa-bell"></i> Notifications
-          </strong>
-          <p style={{ margin: "8px 0 0 0", color: "var(--text-secondary)" }}>
-            Daily summary, Reminder time
-          </p>
-        </div>
       </div>
 
-      {/* DANGER ZONE */}
-      <div
-        className="box"
-        style={{
-          border: "3px dashed var(--border)",
-          background: "#f5f5f5"
-        }}
-      >
-        <strong style={{ textTransform: "uppercase" }}>
-          <i className="fas fa-exclamation-triangle"></i> Danger Zone
-        </strong>
-        <p style={{ margin: "8px 0 0 0", color: "var(--text-secondary)" }}>
-          [ACTION] Delete your account permanently
-        </p>
-      </div>
-
-    <FooterNav />
-
+      <FooterNav />
     </section>
   );
 };

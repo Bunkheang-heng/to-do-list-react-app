@@ -1,74 +1,69 @@
 import React from "react";
 import FooterNav from "../components/FooterNav";
-import "../index.css";
-
 
 const Home = () => {
   return (
-    <section className="page" id="home">
-      <div className="title">Home</div>
+    <section className="flex flex-col gap-6">
 
-      <div className="bar">
-        <i className="fas fa-search"></i> [SEARCH] Search tasks...
+      {/* Heading */}
+      <h2 className="text-2xl font-semibold tracking-tight text-accent">
+        Home
+      </h2>
+
+      {/* Search bar */}
+      <div className="relative">
+        <input
+          className="w-full rounded-[var(--radius-btn)] border border-slate-300 bg-white px-4 py-2.5 pl-10 shadow-sm text-sm placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-accent/30"
+          placeholder="Search tasks..."
+        />
+        <i className="fas fa-search absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
       </div>
 
-      <div className="row">
-        {/* LEFT COLUMN */}
-        <div className="col">
-          <div className="box">
-            <strong style={{ fontSize: "20px" }}>
-              [GREETING] Good afternoon, User!
-            </strong>
-            <p style={{ color: "var(--text-secondary)", margin: "8px 0 0 0" }}>
-              You have X tasks due today
+      {/* Card Grid */}
+      <div className="grid gap-6 md:grid-cols-[2fr,1fr]">
+
+        {/* Left — task cards */}
+        <div className="space-y-4">
+          <h3 className="text-sm font-semibold text-slate-600 uppercase tracking-wide">
+            Tasks
+          </h3>
+
+          <div className="rounded-[var(--radius-card)] bg-white shadow-md border border-slate-200 p-4">
+            <p className="text-sm font-medium text-text">Design homepage UI</p>
+            <p className="text-xs text-subtle mt-1">Due today · Design</p>
+          </div>
+
+          <div className="rounded-[var(--radius-card)] bg-white shadow-md border border-slate-200 p-4">
+            <p className="text-sm font-medium text-text">Fix dashboard bugs</p>
+            <p className="text-xs text-subtle mt-1">Tomorrow · Dev</p>
+          </div>
+        </div>
+
+        {/* Right — recent activity */}
+        <div className="space-y-4">
+          <h3 className="text-sm font-semibold text-slate-600 uppercase">
+            Activity
+          </h3>
+
+          <div className="rounded-[var(--radius-card)] bg-white shadow-md border border-slate-200 p-4 space-y-2 text-sm">
+            <p>
+              <i className="fas fa-check-circle text-green-500 mr-1" />
+              Completed “Email cleanup”
+            </p>
+            <p>
+              <i className="fas fa-edit text-yellow-500 mr-1" />
+              Updated “Sales report”
+            </p>
+            <p>
+              <i className="fas fa-plus text-accent mr-1" />
+              Added new task “Client proposal”
             </p>
           </div>
-
-          <div style={{ margin: "20px 0" }}>
-            <span className="chip primary">
-              <i className="fas fa-plus"></i> [BUTTON] NEW TASK
-            </span>
-          </div>
-
-          {/* TODAY'S TASKS */}
-          <div className="box">
-            <strong>Today's Tasks</strong>
-            <div className="list">
-              <div className="item">
-                <i className="far fa-square"></i> [TASK 1] Pay electricity bill{" "}
-                <span className="chip danger">DUE TODAY</span>
-              </div>
-
-              <div className="item">
-                <i className="far fa-square"></i> [TASK 2] Finish homework{" "}
-                <span className="chip success">TOMORROW</span>
-              </div>
-
-              <div className="item">
-                <i className="far fa-square"></i> [TASK 3] Buy vegetables{" "}
-                <span className="chip warning">OVERDUE</span>
-              </div>
-            </div>
-          </div>
         </div>
 
-        {/* RIGHT COLUMN – RECENT ACTIVITY */}
-        <div className="col aside">
-          <strong>Recent Activity</strong>
-          <div className="box">
-            <i className="fas fa-check-circle"></i> Completed "Task Name"
-          </div>
-          <div className="box">
-            <i className="fas fa-plus-circle"></i> Added "Task Name"
-          </div>
-          <div className="box">
-            <i className="fas fa-edit"></i> Edited "Task Name"
-          </div>
-        </div>
       </div>
 
       <FooterNav />
-
     </section>
   );
 };
