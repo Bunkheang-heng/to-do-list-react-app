@@ -1,28 +1,41 @@
 import React from "react";
-import { Link } from "react-router-dom";
-import "../index.css";
+import { Link, useLocation } from "react-router-dom";
 
 const FooterNav = () => {
+  const { pathname } = useLocation();
+
+  const linkStyle = (r) =>
+    `flex flex-col items-center text-xs font-medium transition-colors duration-300 ${
+      pathname === r ? "text-accent" : "text-[var(--color-subtle)]"
+    }`;
+
   return (
-    <footer className="footer">
-      <i className="fas fa-mobile-alt"></i>
+    <footer
+      className="
+        fixed bottom-0 left-0 right-0
+        bg-[var(--color-box-bg)]
+        border-t border-[var(--color-box-bg)]
+        shadow-lg
+        py-3
+        transition-colors duration-300
+      "
+    >
+      <nav className="flex justify-around max-w-4xl mx-auto">
+        <Link to="/" className={linkStyle("/")}>
+          <i className="fas fa-home text-lg" />
+          <span>Home</span>
+        </Link>
 
-      {/* Navigation Links */}
-      <Link to="/" style={{ margin: "0 10px" }}>
-        Home
-      </Link>
+        <Link to="/tasks" className={linkStyle("/tasks")}>
+          <i className="fas fa-list text-lg" />
+          <span>Tasks</span>
+        </Link>
 
-      <span>|</span>
-
-      <Link to="/tasks" style={{ margin: "0 10px" }}>
-        Tasks
-      </Link>
-
-      <span>|</span>
-
-      <Link to="/setting" style={{ margin: "0 10px" }}>
-        Settings
-      </Link>
+        <Link to="/setting" className={linkStyle("/setting")}>
+          <i className="fas fa-cog text-lg" />
+          <span>Settings</span>
+        </Link>
+      </nav>
     </footer>
   );
 };

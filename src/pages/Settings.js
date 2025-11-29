@@ -1,119 +1,177 @@
-import React from "react";
+import React, { useState } from "react";
 import FooterNav from "../components/FooterNav";
-import "../index.css";
 
 const Settings = () => {
+  // Pull current theme from HTML class
+  const initialTheme = document.documentElement.classList.contains("dark")
+    ? "dark"
+    : "light";
+
+  const [theme, setTheme] = useState(initialTheme);
+
+  const handleThemeChange = (e) => {
+    const value = e.target.value;
+    setTheme(value);
+    const isDark = value === "dark";
+    document.documentElement.classList.toggle("dark", isDark);
+    localStorage.setItem("theme", value);
+  };
+
   return (
-    <section className="page" id="settings">
-      <div className="title">
-        <i className="fas fa-cog"></i> Settings
-      </div>
+    <section className="flex flex-col gap-6">
 
-      {/* USER INFO CARD */}
+      {/* PAGE TITLE */}
+      <h2 className="text-3xl font-semibold tracking-tight text-[var(--color-text)] flex items-center gap-2">
+        Settings
+        <i className="fas fa-cog" />
+      </h2>
+
+      {/* OUTER WRAPPER */}
       <div
-        className="box"
-        style={{
-          border: "3px solid var(--border)",
-          background: "var(--fill)",
-          marginBottom: "24px"
-        }}
+        className="
+          bg-[var(--color-box-bg)]
+          text-[var(--color-text)]
+          rounded-[var(--radius-card)]
+          shadow-md
+          p-6
+          flex flex-col gap-6
+        "
       >
-        <div style={{ display: "flex", alignItems: "center", gap: "20px" }}>
-          <div className="placeholder-img">
-            <i className="fas fa-user-circle"></i>
+
+        {/* PROFILE HEADER BLOCK */}
+        <div
+          className="
+            w-full
+            bg-[#5865F2]        /* placeholder purple-blue header */
+            rounded-[var(--radius-card)]
+            text-white
+            p-6
+            flex justify-between items-center
+          "
+        >
+          {/* Left side info */}
+          <div className="flex items-center gap-4">
+            <div
+              className="
+                w-16 h-16 rounded-full
+                bg-white/20
+                flex items-center justify-center
+                text-3xl
+              "
+            >
+              <i className="fas fa-user" />
+            </div>
+            <div>
+              <h3 className="text-xl font-semibold">TESING</h3>
+              <p className="opacity-90">testing@example.com</p>
+              <p className="opacity-80 text-sm flex items-center gap-1">
+                <i className="fas fa-clock text-sm"></i>
+                Member since Nov 2025
+              </p>
+            </div>
           </div>
 
-          <div style={{ flex: 1 }}>
-            <strong
-              style={{
-                fontSize: "20px",
-                display: "block",
-                marginBottom: "8px"
-              }}
-            >
-              [USER NAME]
-            </strong>
+          {/* Log out button */}
+          <button
+            className="
+              bg-white text-[#5865F2] font-semibold
+              px-4 py-2 rounded-lg shadow
+              hover:bg-gray-100 transition
+            "
+          >
+            <i className="fas fa-sign-out-alt mr-1"></i> Log Out
+          </button>
+        </div>
 
-            <p style={{ margin: 0, fontSize: "14px", color: "var(--text-secondary)" }}>
-              [EMAIL] user@example.com
+        {/* --- THREE SMALL CARDS --- */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+
+          {/* PROFILE CARD */}
+          <div
+            className="
+              bg-[var(--color-box-bg)]
+              border border-[var(--color-bg-alt)]
+              rounded-[var(--radius-card)]
+              shadow-sm
+              p-4
+            "
+          >
+            <h4 className="font-semibold flex items-center gap-2 mb-2">
+              <i className="fas fa-user"></i> Profile
+            </h4>
+            <p className="text-[var(--color-subtle)]">
+              Waiting for login implementation
             </p>
-
-            <p
-              style={{
-                margin: "8px 0 0 0",
-                fontSize: "12px",
-                color: "var(--text-secondary)"
-              }}
-            >
-              <i className="fas fa-calendar-check"></i> Member since [DATE]
-            </p>
           </div>
 
-          <div>
-            <span
-              className="chip"
-              style={{
-                background: "var(--fg)",
-                color: "white",
-                border: "2px solid var(--fg)",
-                padding: "12px 24px",
-                fontWeight: 700
-              }}
+          {/* THEME CARD */}
+          <div
+            className="
+              bg-[var(--color-box-bg)]
+              border border-[var(--color-bg-alt)]
+              rounded-[var(--radius-card)]
+              shadow-sm
+              p-4
+            "
+          >
+            <h4 className="font-semibold flex items-center gap-2 mb-2">
+              <i className="fas fa-palette"></i> Theme
+            </h4>
+
+            <select
+              value={theme}
+              onChange={handleThemeChange}
+              className="
+                bg-[var(--color-bg)]
+                text-[var(--color-text)]
+                border border-[var(--color-bg-alt)]
+                rounded-[var(--radius-btn)]
+                px-3 py-2
+                w-full
+              "
             >
-              <i className="fas fa-sign-out-alt"></i> LOG OUT
-            </span>
+              <option value="light">Light</option>
+              <option value="dark">Dark</option>
+            </select>
+          </div>
+
+          {/* NOTIFICATIONS CARD */}
+          <div
+            className="
+              bg-[var(--color-box-bg)]
+              border border-[var(--color-bg-alt)]
+              rounded-[var(--radius-card)]
+              shadow-sm
+              p-4
+            "
+          >
+            <h4 className="font-semibold flex items-center gap-2 mb-2">
+              <i className="fas fa-bell"></i> Notifications
+            </h4>
+            <p className="text-[var(--color-subtle)]">N/A</p>
           </div>
         </div>
-      </div>
 
-      {/* SETTINGS OPTIONS */}
-      <div className="row">
-        <div className="col box">
-          <strong>
-            <i className="fas fa-user"></i> Profile
-          </strong>
-          <p style={{ margin: "8px 0 0 0", color: "var(--text-secondary)" }}>
-            Name, Email, Avatar
-          </p>
+        {/* --- DANGER ZONE --- */}
+        <div
+          className="
+            border border-red-400
+            bg-red-50 dark:bg-red-950/40
+            text-red-600 dark:text-red-400
+            rounded-[var(--radius-card)]
+            p-4
+          "
+        >
+          <h4 className="font-semibold flex items-center gap-2 mb-1">
+            <i className="fas fa-exclamation-triangle"></i>
+            Danger Zone
+          </h4>
+          <p>Delete your account permanently</p>
         </div>
 
-        <div className="col box">
-          <strong>
-            <i className="fas fa-palette"></i> Preferences
-          </strong>
-          <p style={{ margin: "8px 0 0 0", color: "var(--text-secondary)" }}>
-            Theme, Sort, Density
-          </p>
-        </div>
-
-        <div className="col box">
-          <strong>
-            <i className="fas fa-bell"></i> Notifications
-          </strong>
-          <p style={{ margin: "8px 0 0 0", color: "var(--text-secondary)" }}>
-            Daily summary, Reminder time
-          </p>
-        </div>
       </div>
 
-      {/* DANGER ZONE */}
-      <div
-        className="box"
-        style={{
-          border: "3px dashed var(--border)",
-          background: "#f5f5f5"
-        }}
-      >
-        <strong style={{ textTransform: "uppercase" }}>
-          <i className="fas fa-exclamation-triangle"></i> Danger Zone
-        </strong>
-        <p style={{ margin: "8px 0 0 0", color: "var(--text-secondary)" }}>
-          [ACTION] Delete your account permanently
-        </p>
-      </div>
-
-    <FooterNav />
-
+      <FooterNav />
     </section>
   );
 };

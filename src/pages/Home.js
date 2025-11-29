@@ -1,74 +1,57 @@
 import React from "react";
 import FooterNav from "../components/FooterNav";
-import "../index.css";
-
 
 const Home = () => {
   return (
-    <section className="page" id="home">
-      <div className="title">Home</div>
+    <section className="flex flex-col gap-6">
 
-      <div className="bar">
-        <i className="fas fa-search"></i> [SEARCH] Search tasks...
+      {/* Title */}
+      <h2 className="text-2xl font-semibold tracking-tight text-accent">
+        Home
+      </h2>
+
+      {/* Search Bar */}
+      <div className="relative">
+        <input
+          className="
+            w-full
+            rounded-[var(--radius-btn)]
+            border border-[var(--color-box-bg)]
+            bg-[var(--color-box-bg)]
+            text-[var(--color-text)]
+            placeholder:text-[var(--color-subtle)]
+            px-4 py-2.5 pl-10
+            shadow-sm
+            transition-colors duration-300
+          "
+          placeholder="Search tasks..."
+        />
+        <i
+          className="
+            fas fa-search
+            absolute left-3 top-1/2 -translate-y-1/2
+            text-[var(--color-subtle)]
+            transition-colors duration-300
+          "
+        />
       </div>
 
-      <div className="row">
-        {/* LEFT COLUMN */}
-        <div className="col">
-          <div className="box">
-            <strong style={{ fontSize: "20px" }}>
-              [GREETING] Good afternoon, User!
-            </strong>
-            <p style={{ color: "var(--text-secondary)", margin: "8px 0 0 0" }}>
-              You have X tasks due today
-            </p>
-          </div>
-
-          <div style={{ margin: "20px 0" }}>
-            <span className="chip primary">
-              <i className="fas fa-plus"></i> [BUTTON] NEW TASK
-            </span>
-          </div>
-
-          {/* TODAY'S TASKS */}
-          <div className="box">
-            <strong>Today's Tasks</strong>
-            <div className="list">
-              <div className="item">
-                <i className="far fa-square"></i> [TASK 1] Pay electricity bill{" "}
-                <span className="chip danger">DUE TODAY</span>
-              </div>
-
-              <div className="item">
-                <i className="far fa-square"></i> [TASK 2] Finish homework{" "}
-                <span className="chip success">TOMORROW</span>
-              </div>
-
-              <div className="item">
-                <i className="far fa-square"></i> [TASK 3] Buy vegetables{" "}
-                <span className="chip warning">OVERDUE</span>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* RIGHT COLUMN – RECENT ACTIVITY */}
-        <div className="col aside">
-          <strong>Recent Activity</strong>
-          <div className="box">
-            <i className="fas fa-check-circle"></i> Completed "Task Name"
-          </div>
-          <div className="box">
-            <i className="fas fa-plus-circle"></i> Added "Task Name"
-          </div>
-          <div className="box">
-            <i className="fas fa-edit"></i> Edited "Task Name"
-          </div>
-        </div>
+      {/* Example Card */}
+      <div
+        className="
+          rounded-[var(--radius-card)]
+          bg-[var(--color-box-bg)]
+          text-[var(--color-text)]
+          border border-[var(--color-box-bg)]
+          shadow-md
+          p-4
+          transition-colors duration-300
+        "
+      >
+        <p>Orange UI test</p>
       </div>
 
       <FooterNav />
-
     </section>
   );
 };

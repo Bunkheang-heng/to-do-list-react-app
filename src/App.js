@@ -14,6 +14,21 @@ import Register from "./pages/auth/Register";
 import Profile from './pages/Profile';
 
 export default function App() {
+  useEffect(() => {
+    // 1. Load saved theme
+    const saved = localStorage.getItem("theme");
+
+    if (saved === "dark") {
+      document.documentElement.classList.add("dark");
+    } else if (saved === "light") {
+      document.documentElement.classList.remove("dark");
+    } else {
+      // 2. First-time users → follow system preference
+      const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+      if (prefersDark) document.documentElement.classList.add("dark");
+    }
+  }, []);
+
   return (
    <Router>
     <ToastContainer
