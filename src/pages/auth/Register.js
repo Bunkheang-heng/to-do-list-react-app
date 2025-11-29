@@ -5,6 +5,7 @@ import { toast } from 'react-toastify';
 import AuthLayout from '../../components/AuthLayout';
 import FormInput from '../../components/FormInput';
 import Button from '../../components/Button';
+import { authService } from '../../utils/auth';
 
 export default function Register() {
   const navigate = useNavigate();
@@ -43,18 +44,26 @@ export default function Register() {
       return;
     }
 
-    // Add your registration logic here
-    console.log('Register:', formData);
+    // Check if user already exists
+    const existingUsers = authService.getRegisteredUsers();
+    const userExists = existingUsers.some((u) => u.email === formData.email);
     
-    // Simulate API call - Replace with your actual registration logic
+    if (userExists) {
+      toast.error('An account with this email already exists');
+      return;
+    }
+
     try {
-      // Simulate successful registration
-      toast.success('Account created successfully!');
+      const result = authService.registerUser(formData);
       
-      // Navigate to login after successful registration
-      setTimeout(() => {
-        navigate('/login');
-      }, 1500);
+      if (result.success) {
+        toast.success('Account created successfully!');
+        setTimeout(() => {
+          navigate('/login');
+        }, 1500);
+      } else {
+        toast.error(result.error || 'Registration failed. Please try again.');
+      }
     } catch (error) {
       toast.error('Registration failed. Please try again.');
     }

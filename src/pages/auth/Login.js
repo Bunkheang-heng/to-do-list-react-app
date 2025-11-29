@@ -5,6 +5,7 @@ import { toast } from 'react-toastify';
 import AuthLayout from '../../components/AuthLayout';
 import FormInput from '../../components/FormInput';
 import Button from '../../components/Button';
+import { authService } from '../../utils/auth';
 
 export default function Login() {
   const navigate = useNavigate();
@@ -23,24 +24,23 @@ export default function Login() {
   const handleSubmit = (e) => {
     e.preventDefault();
     
-    // Add your login logic here
-    console.log('Login:', formData);
-    
-    // Example validation
+    // Validation
     if (!formData.email || !formData.password) {
       toast.error('Please fill in all fields');
       return;
     }
 
-    // Simulate API call - Replace with your actual login logic
     try {
-      // Simulate successful login
-      toast.success('Login successful!');
+      const result = authService.login(formData.email, formData.password);
       
-      // Navigate to home after successful login
-      setTimeout(() => {
-        navigate('/task');
-      }, 1500);
+      if (result.success) {
+        toast.success('Login successful!');
+        setTimeout(() => {
+          navigate('/task');
+        }, 1500);
+      } else {
+        toast.error(result.error || 'Login failed. Please try again.');
+      }
     } catch (error) {
       toast.error('Login failed. Please try again.');
     }
