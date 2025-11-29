@@ -11,6 +11,7 @@ import Leading from "./pages/Leading";
 import Login from "./pages/auth/Login";
 import Home from "./pages/Home";
 import Register from "./pages/auth/Register";
+import Profile from './pages/Profile';
 
 export default function App() {
   return (
@@ -33,7 +34,7 @@ export default function App() {
         <Route path="/task" element={<Task />} />
         <Route path="/setting" element={<Settings />} />
         <Route path="/home" element={<Home />} />
-        
+        <Route path="/profile" element={<Profile />} />
       </Route>
       
       {/* Routes without Sidebar */}

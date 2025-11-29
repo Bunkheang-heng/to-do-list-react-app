@@ -20,7 +20,7 @@ export default function Sidebar() {
                 to={item.path}
                 className={({ isActive }) =>
                   `flex items-center gap-3 px-4 py-2 rounded hover:bg-gray-100 transition rounded-[200px] w-full ${
-                    isActive ? 'bg-gray-200  rounded-[200px] font-semibold text-blue-600' : 'text-gray-800'
+                    isActive ? 'bg-gray-200  rounded-[200px] font-semibold text-orange-500' : 'text-gray-800'
                   }`
                 }
               >
