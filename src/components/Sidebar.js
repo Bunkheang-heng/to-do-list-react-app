@@ -3,7 +3,7 @@ import { NavLink } from 'react-router-dom'
 import { FaHome, FaTasks, FaCog, FaUser } from 'react-icons/fa'
 
 const menuItems = [
-    { path: '/', label: 'Home', icon: <FaHome /> },
+    { path: '/home', label: 'Home', icon: <FaHome /> },
     { path: '/task', label: 'Tasks', icon: <FaTasks /> },
     { path: '/setting', label: 'Settings', icon: <FaCog /> },
     { path: '/profile', label: 'Profile', icon: <FaUser /> }

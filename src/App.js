@@ -9,6 +9,7 @@ import NotFound from "./pages/NotFound";
 import Layout from "./components/Layout";
 import Leading from "./pages/Leading";
 import Login from "./pages/auth/Login";
+import Home from "./pages/Home";
 import Register from "./pages/auth/Register";
 
 export default function App() {
@@ -29,9 +30,9 @@ export default function App() {
     <Routes>
       {/* Routes with Sidebar */}
       <Route element={<Layout />}>
-        {/* <Route path="/" element={<Home />} /> */}
         <Route path="/task" element={<Task />} />
         <Route path="/setting" element={<Settings />} />
+        <Route path="/home" element={<Home />} />
         
       </Route>
       
