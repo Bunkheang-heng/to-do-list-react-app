@@ -1,24 +1,13 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
+import { useAuth } from '../hook/useAuth';
 import { authService } from '../utils/auth';
 import Button from '../components/Button';
 
 export default function Profile() {
   const navigate = useNavigate();
-  const [user, setUser] = useState(null);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    const currentUser = authService.getCurrentUser();
-    if (currentUser) {
-      setUser(currentUser);
-    } else {
-      toast.error('Please login to view your profile');
-      navigate('/login');
-    }
-    setLoading(false);
-  }, [navigate]);
+  const { user } = useAuth();
 
   const handleLogout = () => {
     const result = authService.logout();
@@ -29,16 +18,6 @@ export default function Profile() {
       toast.error('Logout failed');
     }
   };
-
-  if (loading) {
-    return (
-      <div className="flex items-center justify-center min-h-screen">
-        <div className="text-lg text-[var(--color-text)]">Loading...</div>
-      </div>
-    );
-  }
-
-  if (!user) return null;
 
   return (
     <div className="p-6 max-w-2xl mx-auto text-[var(--color-text)] transition-colors duration-300">

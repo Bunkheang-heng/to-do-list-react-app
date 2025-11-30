@@ -12,6 +12,7 @@ import Login from "./pages/auth/Login";
 import Home from "./pages/Home";
 import Register from "./pages/auth/Register";
 import Profile from './pages/Profile';
+import ProtectedRoute from './components/ProtectedRoute';
 
 export default function App() {
   useEffect(() => {
@@ -44,15 +45,43 @@ export default function App() {
       theme="light"
     />
     <Routes>
-      {/* Routes with Sidebar */}
+      {/* Routes with Sidebar - Protected */}
       <Route element={<Layout />}>
-        <Route path="/task" element={<Task />} />
-        <Route path="/setting" element={<Settings />} />
-        <Route path="/home" element={<Home />} />
-        <Route path="/profile" element={<Profile />} />
+        <Route 
+          path="/task" 
+          element={
+            <ProtectedRoute>
+              <Task />
+            </ProtectedRoute>
+          } 
+        />
+        <Route 
+          path="/setting" 
+          element={
+            <ProtectedRoute>
+              <Settings />
+            </ProtectedRoute>
+          } 
+        />
+        <Route 
+          path="/home" 
+          element={
+            <ProtectedRoute>
+              <Home />
+            </ProtectedRoute>
+          } 
+        />
+        <Route 
+          path="/profile" 
+          element={
+            <ProtectedRoute>
+              <Profile />
+            </ProtectedRoute>
+          } 
+        />
       </Route>
       
-      {/* Routes without Sidebar */}
+      {/* Routes without Sidebar - Public */}
       <Route path="/" element={<Leading />} />
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
