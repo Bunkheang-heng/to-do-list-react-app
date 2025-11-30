@@ -15,7 +15,7 @@ import Profile from './pages/Profile';
 
 export default function App() {
   useEffect(() => {
-    // 1. Load saved theme
+    // Load saved theme
     const saved = localStorage.getItem("theme");
 
     if (saved === "dark") {
@@ -23,7 +23,7 @@ export default function App() {
     } else if (saved === "light") {
       document.documentElement.classList.remove("dark");
     } else {
-      // 2. First-time users → follow system preference
+      // First-time users → follow system preference
       const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
       if (prefersDark) document.documentElement.classList.add("dark");
     }
