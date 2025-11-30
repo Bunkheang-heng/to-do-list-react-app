@@ -99,5 +99,69 @@ export const authService = {
       return [];
     }
   },
+
+  changePassword: (currentPassword, newPassword) => {
+    try {
+      const users = authService.getRegisteredUsers();
+      const currentUser = authService.getCurrentUser();
+
+      if (!currentUser) {
+        return { success: false, error: 'User not logged in' };
+      }
+
+      const userIndex = users.findIndex((u) => u.id === currentUser.id);
+      if (userIndex === -1) {
+        return { success: false, error: 'User record not found' };
+      }
+
+      const userRecord = users[userIndex];
+
+      if (userRecord.password !== currentPassword) {
+        return { success: false, error: 'Current password is incorrect' };
+      }
+
+      userRecord.password = newPassword;
+
+      localStorage.setItem('registeredUsers', JSON.stringify(users));
+
+      return { success: true, message: 'Password updated successfully' };
+    } catch (error) {
+      console.error('Password change error:', error);
+      return { success: false, error: error.message };
+    }
+  },
+
+  deleteAccount: (password) => {
+  try {
+      const users = authService.getRegisteredUsers();
+      const currentUser = authService.getCurrentUser();
+
+      if (!currentUser) {
+        return { success: false, error: 'User not logged in' };
+      }
+
+      const userIndex = users.findIndex((u) => u.id === currentUser.id);
+
+      if (userIndex === -1) {
+        return { success: false, error: 'User record not found' };
+      }
+
+      const userRecord = users[userIndex];
+
+      if (userRecord.password !== password) {
+        return { success: false, error: 'Incorrect password' };
+      }
+
+      users.splice(userIndex, 1);
+      localStorage.setItem('registeredUsers', JSON.stringify(users));
+
+      authService.logout();
+
+      return { success: true };
+    } catch (error) {
+      console.error('Delete account error:', error);
+      return { success: false, error: error.message };
+    }
+  },
 };
 

@@ -1,14 +1,8 @@
 import React from "react";
-import FooterNav from "../components/FooterNav";
 
 const Home = () => {
   return (
     <section className="flex flex-col gap-6">
-
-      {/* Title */}
-      <h2 className="text-2xl font-semibold tracking-tight text-accent">
-        Home
-      </h2>
 
       {/* Search Bar */}
       <div className="relative">
@@ -36,7 +30,7 @@ const Home = () => {
         />
       </div>
 
-      {/* Example Card */}
+      {/* Overview Card */}
       <div
         className="
           rounded-[var(--radius-card)]
@@ -51,7 +45,6 @@ const Home = () => {
         <p>Orange UI test</p>
       </div>
 
-      <FooterNav />
     </section>
   );
 };

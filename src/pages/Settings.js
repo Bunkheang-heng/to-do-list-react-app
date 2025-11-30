@@ -1,13 +1,20 @@
 import React, { useState } from "react";
-import FooterNav from "../components/FooterNav";
+import { toast } from 'react-toastify';
+import ChangePasswordPopup from "../components/ChangePasswordPopup";
+import DeleteAccountPopup from "../components/DeleteAccountPopup";
+import { authService } from "../utils/auth";
+import { useNavigate } from "react-router-dom";
 
 const Settings = () => {
-  // Pull current theme from HTML class
   const initialTheme = document.documentElement.classList.contains("dark")
     ? "dark"
     : "light";
 
   const [theme, setTheme] = useState(initialTheme);
+  const [showPopup, setShowPopup] = useState(false);
+  const [showDeletePopup, setShowDeletePopup] = useState(false);
+
+  const navigate = useNavigate();
 
   const handleThemeChange = (e) => {
     const value = e.target.value;
@@ -20,16 +27,10 @@ const Settings = () => {
   return (
     <section className="flex flex-col gap-6">
 
-      {/* PAGE TITLE */}
-      <h2 className="text-3xl font-semibold tracking-tight text-[var(--color-text)] flex items-center gap-2">
-        Settings
-        <i className="fas fa-cog" />
-      </h2>
-
       {/* OUTER WRAPPER */}
       <div
         className="
-          bg-[var(--color-box-bg)]
+          bg-[var(--color-bg)]
           text-[var(--color-text)]
           rounded-[var(--radius-card)]
           shadow-md
@@ -38,71 +39,8 @@ const Settings = () => {
         "
       >
 
-        {/* PROFILE HEADER BLOCK */}
-        <div
-          className="
-            w-full
-            bg-[#5865F2]        /* placeholder purple-blue header */
-            rounded-[var(--radius-card)]
-            text-white
-            p-6
-            flex justify-between items-center
-          "
-        >
-          {/* Left side info */}
-          <div className="flex items-center gap-4">
-            <div
-              className="
-                w-16 h-16 rounded-full
-                bg-white/20
-                flex items-center justify-center
-                text-3xl
-              "
-            >
-              <i className="fas fa-user" />
-            </div>
-            <div>
-              <h3 className="text-xl font-semibold">TESING</h3>
-              <p className="opacity-90">testing@example.com</p>
-              <p className="opacity-80 text-sm flex items-center gap-1">
-                <i className="fas fa-clock text-sm"></i>
-                Member since Nov 2025
-              </p>
-            </div>
-          </div>
-
-          {/* Log out button */}
-          <button
-            className="
-              bg-white text-[#5865F2] font-semibold
-              px-4 py-2 rounded-lg shadow
-              hover:bg-gray-100 transition
-            "
-          >
-            <i className="fas fa-sign-out-alt mr-1"></i> Log Out
-          </button>
-        </div>
-
-        {/* --- THREE SMALL CARDS --- */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-
-          {/* PROFILE CARD */}
-          <div
-            className="
-              bg-[var(--color-box-bg)]
-              border border-[var(--color-bg-alt)]
-              rounded-[var(--radius-card)]
-              shadow-sm
-              p-4
-            "
-          >
-            <h4 className="font-semibold flex items-center gap-2 mb-2">
-              <i className="fas fa-user"></i> Profile
-            </h4>
-            <p className="text-[var(--color-subtle)]">
-              Waiting for login implementation
-            </p>
-          </div>
+        {/* SETTINGS GRID */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
 
           {/* THEME CARD */}
           <div
@@ -135,7 +73,7 @@ const Settings = () => {
             </select>
           </div>
 
-          {/* NOTIFICATIONS CARD */}
+          {/* CHANGE PASSWORD CARD */}
           <div
             className="
               bg-[var(--color-box-bg)]
@@ -146,32 +84,102 @@ const Settings = () => {
             "
           >
             <h4 className="font-semibold flex items-center gap-2 mb-2">
-              <i className="fas fa-bell"></i> Notifications
+              <i className="fas fa-lock"></i> Change Password
             </h4>
-            <p className="text-[var(--color-subtle)]">N/A</p>
+
+            <button
+              onClick={() => setShowPopup(true)}
+              className="
+                bg-[var(--color-accent)]
+                text-white
+                font-semibold
+                px-4 py-2
+                rounded-[var(--radius-btn)]
+                shadow-sm
+                hover:opacity-90
+                transition
+              "
+            >
+              Update Password
+            </button>
           </div>
+
         </div>
 
         {/* --- DANGER ZONE --- */}
         <div
           className="
-            border border-red-400
-            bg-red-50 dark:bg-red-950/40
-            text-red-600 dark:text-red-400
             rounded-[var(--radius-card)]
             p-4
+            border border-[var(--color-danger-border)]
+            bg-[var(--color-danger-bg)]
+            text-[var(--color-danger-text)]
+            shadow-sm
+            transition-colors duration-300
           "
         >
           <h4 className="font-semibold flex items-center gap-2 mb-1">
             <i className="fas fa-exclamation-triangle"></i>
             Danger Zone
           </h4>
-          <p>Delete your account permanently</p>
+          <button
+            onClick={() => setShowDeletePopup(true)}
+            className="
+              mt-2 px-4 py-2 rounded-[var(--radius-btn)]
+              bg-[var(--color-danger-border)]
+              text-white font-semibold
+              hover:opacity-90 transition
+            "
+          >
+            Delete Account
+          </button>
         </div>
 
-      </div>
+        {showPopup && (
+          <ChangePasswordPopup
+            onClose={() => setShowPopup(false)}
+            onSave={(data) => {
+              const { currentPassword, newPassword, confirmPassword } = data;
 
-      <FooterNav />
+              if (newPassword !== confirmPassword) {
+                toast.error("New passwords do not match");
+                return;
+              }
+
+              const result = authService.changePassword(currentPassword, newPassword);
+
+              if (!result.success) {
+                toast.error(result.error);
+              } else {
+                toast.success(result.message);
+              }
+
+              setShowPopup(false);
+            }}
+
+          />
+        )}
+
+        {showDeletePopup && (
+          <DeleteAccountPopup
+            onClose={() => setShowDeletePopup(false)}
+            onDelete={(password) => {
+              const result = authService.deleteAccount(password);
+
+              if (!result.success) {
+                toast.error(result.error);
+                return;
+              }
+
+              toast.success("Account deleted");
+              navigate("/register");
+            }}
+          />
+        )}
+
+
+
+      </div>
     </section>
   );
 };

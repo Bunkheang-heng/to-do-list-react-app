@@ -21,14 +21,19 @@ const FooterNav = () => {
       "
     >
       <nav className="flex justify-around max-w-4xl mx-auto">
-        <Link to="/" className={linkStyle("/")}>
+        <Link to="/home" className={linkStyle("/home")}>
           <i className="fas fa-home text-lg" />
           <span>Home</span>
         </Link>
 
-        <Link to="/tasks" className={linkStyle("/tasks")}>
+        <Link to="/task" className={linkStyle("/task")}>
           <i className="fas fa-list text-lg" />
           <span>Tasks</span>
+        </Link>
+
+        <Link to="/profile" className={linkStyle("/profile")}>
+          <i className="fas fa-cog text-lg" />
+          <span>Profile</span>
         </Link>
 
         <Link to="/setting" className={linkStyle("/setting")}>
