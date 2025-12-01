@@ -11,7 +11,7 @@ export const taskService = {
       const tasks = localStorage.getItem(key);
       return tasks ? JSON.parse(tasks) : [];
     } catch (error) {
-      console.error('Get tasks error:', error);
+      console.error('error:', error);
       return [];
     }
   },
@@ -25,6 +25,7 @@ export const taskService = {
         description: taskData.description || '',
         completed: false,
         priority: taskData.priority || 'medium',
+        dueDate: taskData.dueDate || null,
         createdAt: new Date().toISOString(),
         updatedAt: new Date().toISOString(),
       };

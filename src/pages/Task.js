@@ -18,12 +18,18 @@ import { useTasks } from '../hook/useTasks';
 import { taskService } from '../utils/task';
 import {getPriorityBadgeColor, getPriorityIcon } from '../utils/taskUtils';
 import TaskModal from '../components/TaskModal';
+import Button from '../components/Button';
 
 export default function Task() {
   const location = useLocation();
   const { user } = useAuth();
   const { tasks, activeTasksCount, completedTasksCount, refreshTasks } = useTasks(user?.id);
   const [filter, setFilter] = useState('all');
+  const [selectedDate, setSelectedDate] = useState(() => {
+    const today = new Date();
+    return today.toISOString().split('T')[0];
+  });
+  const [priorityFilter, setPriorityFilter] = useState('all');
   const [searchQuery, setSearchQuery] = useState('');
   const [showForm, setShowForm] = useState(false);
   const [editingTask, setEditingTask] = useState(null);
@@ -31,6 +37,7 @@ export default function Task() {
     title: '',
     description: '',
     priority: 'medium',
+    dueDate: '',
   });
 
   useEffect(() => {
@@ -69,6 +76,7 @@ export default function Task() {
         title: formData.title,
         description: formData.description,
         priority: formData.priority,
+        dueDate: formData.dueDate || null,
       });
 
       if (result.success) {
@@ -96,6 +104,7 @@ export default function Task() {
       title: '',
       description: '',
       priority: 'medium',
+      dueDate: '',
     });
     setEditingTask(null);
     setShowForm(false);
@@ -107,6 +116,7 @@ export default function Task() {
       title: task.title,
       description: task.description || '',
       priority: task.priority || 'medium',
+      dueDate: task.dueDate ? new Date(task.dueDate).toISOString().split('T')[0] : '',
     });
     setShowForm(true);
   };
@@ -147,12 +157,33 @@ export default function Task() {
   const getFilteredTasks = () => {
     let filtered = tasks;
 
+    // Filter by status (all, active, completed)
     if (filter === 'active') {
       filtered = filtered.filter((task) => !task.completed);
     } else if (filter === 'completed') {
       filtered = filtered.filter((task) => task.completed);
     }
 
+    // Filter by selected date
+    if (selectedDate) {
+      filtered = filtered.filter((task) => {
+        if (!task.dueDate) {
+          return false;
+        }
+        const dueDate = new Date(task.dueDate);
+        dueDate.setHours(0, 0, 0, 0);
+        const selected = new Date(selectedDate);
+        selected.setHours(0, 0, 0, 0);
+        return dueDate.getTime() === selected.getTime();
+      });
+    }
+
+    // Filter by priority
+    if (priorityFilter !== 'all') {
+      filtered = filtered.filter((task) => task.priority === priorityFilter);
+    }
+
+    // Filter by search query
     if (searchQuery.trim()) {
       const query = searchQuery.toLowerCase();
       filtered = filtered.filter(
@@ -177,7 +208,7 @@ export default function Task() {
             <FaTasks className="text-orange-600 dark:text-orange-400 text-xl" />
           </div>
           <div>
-            <h1 className="text-3xl font-semibold text-gray-900 dark:text-white tracking-tight">
+            <h1 className="text-3xl font-semibold text-white dark:text-white tracking-tight">
               Task Manager
             </h1>
             <p className="text-gray-500 dark:text-gray-400 mt-1 text-sm">
@@ -239,62 +270,113 @@ export default function Task() {
               className="w-full pl-11 pr-4 py-2.5 border border-gray-200 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-900 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-orange-500/20 focus:border-orange-500 dark:focus:border-orange-400 transition-all text-sm"
             />
           </div>
-          <div className="flex flex-wrap gap-2">
-            <button
-              onClick={() => setFilter('all')}
-              className={`px-4 py-2 rounded-lg font-medium transition-colors flex items-center gap-2 text-sm ${
-                filter === 'all'
-                  ? 'bg-orange-500 text-white'
-                  : 'bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700'
-              }`}
-            >
-              <FaFilter className="text-xs" />
-              All ({tasks.length})
-            </button>
-            <button
-              onClick={() => setFilter('active')}
-              className={`px-4 py-2 rounded-lg font-medium transition-colors flex items-center gap-2 text-sm ${
-                filter === 'active'
-                  ? 'bg-green-500 text-white'
-                  : 'bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700'
-              }`}
-            >
-              <FaCircle className="text-xs" />
-              Active ({activeTasksCount})
-            </button>
-            <button
-              onClick={() => setFilter('completed')}
-              className={`px-4 py-2 rounded-lg font-medium transition-colors flex items-center gap-2 text-sm ${
-                filter === 'completed'
-                  ? 'bg-blue-500 text-white'
-                  : 'bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700'
-              }`}
-            >
-              <FaCheckCircle className="text-xs" />
-              Completed ({completedTasksCount})
-            </button>
+          <div className="flex flex-wrap gap-2 items-center">
+            <div className="flex flex-wrap gap-2">
+              <button
+                onClick={() => setFilter('all')}
+                className={`px-4 py-2 rounded-lg font-medium transition-colors flex items-center gap-2 text-sm ${
+                  filter === 'all'
+                    ? 'bg-orange-500 text-white'
+                    : 'bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700'
+                }`}
+              >
+                <FaFilter className="text-xs" />
+                All ({tasks.length})
+              </button>
+              <button
+                onClick={() => setFilter('active')}
+                className={`px-4 py-2 rounded-lg font-medium transition-colors flex items-center gap-2 text-sm ${
+                  filter === 'active'
+                    ? 'bg-green-500 text-white'
+                    : 'bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700'
+                }`}
+              >
+                <FaCircle className="text-xs" />
+                Active ({activeTasksCount})
+              </button>
+              <button
+                onClick={() => setFilter('completed')}
+                className={`px-4 py-2 rounded-lg font-medium transition-colors flex items-center gap-2 text-sm ${
+                  filter === 'completed'
+                    ? 'bg-blue-500 text-white'
+                    : 'bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700'
+                }`}
+              >
+                <FaCheckCircle className="text-xs" />
+                Completed ({completedTasksCount})
+              </button>
+            </div>
+
+            <div className="ml-3 flex items-center gap-2">
+              <label className="text-sm text-gray-600 dark:text-gray-400 whitespace-nowrap">Priority:</label>
+              <select
+                value={priorityFilter}
+                onChange={(e) => setPriorityFilter(e.target.value)}
+                className="px-3 py-2 border border-gray-200 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white text-sm"
+              >
+                <option value="all">All</option>
+                <option value="high">High</option>
+                <option value="medium">Medium</option>
+                <option value="low">Low</option>
+              </select>
+              {priorityFilter !== 'all' && (
+                <button
+                  onClick={() => setPriorityFilter('all')}
+                  className="px-3 py-2 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors"
+                >
+                  Clear
+                </button>
+              )}
+            </div>
+          </div>
+        </div>
+
+        {/* Date Filter Section */}
+        <div className="mt-4 pt-4 border-t border-gray-200 dark:border-gray-700">
+          <div className="flex items-center gap-2 mb-3">
+            <FaCalendarAlt className="text-gray-500 dark:text-gray-400 text-sm" />
+            <span className="text-sm font-medium text-gray-700 dark:text-gray-300">Filter by Date:</span>
+          </div>
+          <div className="flex flex-wrap items-center gap-3 mb-3">
+            <div className="flex items-center gap-2">
+              <label className="text-sm text-gray-600 dark:text-gray-400 whitespace-nowrap">Pick a date:</label>
+              <input
+                type="date"
+                value={selectedDate}
+                onChange={(e) => setSelectedDate(e.target.value)}
+                className="px-3 py-2 border border-gray-200 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-purple-500/20 focus:border-purple-500 dark:focus:border-purple-400 transition-all text-sm"
+              />
+              {selectedDate && (
+                <button
+                  onClick={() => setSelectedDate('')}
+                  className="px-3 py-2 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors"
+                >
+                  Clear
+                </button>
+              )}
+            </div>
           </div>
         </div>
 
         <div className="flex flex-wrap gap-2.5">
-          <button
+          <Button
+            variant="primary"
             onClick={() => {
               resetForm();
               setShowForm(true);
             }}
-            className="px-4 py-2.5 bg-orange-500 hover:bg-orange-600 text-white rounded-lg font-medium transition-colors flex items-center gap-2 text-sm"
           >
             <FaPlus className="text-xs" />
             New Task
-          </button>
+          </Button>
           {completedTasksCount > 0 && (
-            <button
+            <Button
+              variant="secondary"
               onClick={handleDeleteCompleted}
-              className="px-4 py-2.5 bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 border border-gray-200 dark:border-gray-700 rounded-lg font-medium hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors flex items-center gap-2 text-sm"
             >
               <FaTrash className="text-xs" />
               Clear Completed
-            </button>
+            </Button>
           )}
         </div>
       </div>
@@ -310,6 +392,8 @@ export default function Task() {
               <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">
                 {searchQuery
                   ? 'No tasks found'
+                  : selectedDate
+                  ? `No tasks found for ${new Date(selectedDate).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}`
                   : filter === 'active'
                   ? 'No active tasks'
                   : filter === 'completed'
@@ -319,6 +403,8 @@ export default function Task() {
               <p className="text-gray-500 dark:text-gray-400 mb-5 max-w-md text-sm">
                 {searchQuery
                   ? 'Try adjusting your search terms'
+                  : selectedDate
+                  ? 'Try selecting a different date or create a new task'
                   : filter === 'active'
                   ? 'All your tasks are completed! Great job!'
                   : filter === 'completed'
@@ -326,16 +412,16 @@ export default function Task() {
                   : 'Get started by creating your first task'}
               </p>
               {!searchQuery && filter === 'all' && (
-                <button
+                <Button
+                  variant="primary"
                   onClick={() => {
                     resetForm();
                     setShowForm(true);
                   }}
-                  className="px-4 py-2.5 bg-orange-500 hover:bg-orange-600 text-white rounded-lg font-medium transition-colors flex items-center gap-2 text-sm"
                 >
                   <FaPlus className="text-xs" />
                   Create Your First Task
-                </button>
+                </Button>
               )}
             </div>
           </div>
@@ -392,15 +478,31 @@ export default function Task() {
                     </p>
                   )}
                   
-                  <div className="flex items-center gap-3 text-xs text-gray-400 dark:text-gray-500">
+                  <div className="flex items-center gap-3 text-xs text-gray-400 dark:text-gray-500 flex-wrap">
                     <div className="flex items-center gap-1">
                       <FaCalendarAlt className="text-xs" />
-                      <span>{new Date(task.createdAt).toLocaleDateString('en-US', { 
+                      <span>Created {new Date(task.createdAt).toLocaleDateString('en-US', { 
                         month: 'short', 
                         day: 'numeric', 
                         year: 'numeric' 
                       })}</span>
                     </div>
+                    {task.dueDate && (
+                      <div className={`flex items-center gap-1 ${
+                        new Date(task.dueDate) < new Date() && !task.completed
+                          ? 'text-red-500 dark:text-red-400 font-medium'
+                          : new Date(task.dueDate) <= new Date(new Date().setDate(new Date().getDate() + 1)) && !task.completed
+                          ? 'text-orange-500 dark:text-orange-400 font-medium'
+                          : ''
+                      }`}>
+                        <FaCalendarAlt className="text-xs" />
+                        <span>Due {new Date(task.dueDate).toLocaleDateString('en-US', { 
+                          month: 'short', 
+                          day: 'numeric', 
+                          year: 'numeric' 
+                        })}</span>
+                      </div>
+                    )}
                     {task.updatedAt !== task.createdAt && (
                       <span className="text-gray-300 dark:text-gray-600">
                         Updated {new Date(task.updatedAt).toLocaleDateString('en-US', { 

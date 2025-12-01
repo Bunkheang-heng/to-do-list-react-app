@@ -5,76 +5,62 @@ export default function Button({
   onClick, 
   type = "button", 
   variant = "primary", 
+  size = "md",
   fullWidth = false,
-  disabled = false 
+  disabled = false,
+  className = "",
+  ...props
 }) {
-  const getButtonStyle = () => {
-    const baseStyle = {
-      padding: "14px 28px",
-      fontSize: "1em",
-      fontWeight: 700,
-      borderRadius: "12px",
-      cursor: disabled ? "not-allowed" : "pointer",
-      transition: "all 0.3s ease",
-      border: "none",
-      width: fullWidth ? "100%" : "auto",
-      opacity: disabled ? 0.6 : 1,
-    };
-
-    if (variant === "primary") {
-      return {
-        ...baseStyle,
-        background: "linear-gradient(135deg, #ff6b35 0%, #ff8c42 100%)",
-        color: "white",
-        boxShadow: "0 4px 15px rgba(255, 107, 53, 0.3)",
-      };
+  const getVariantClasses = () => {
+    switch (variant) {
+      case "primary":
+        return "bg-orange-500 hover:bg-orange-600 text-white";
+      case "secondary":
+        return "bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 border border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700";
+      case "danger":
+        return "bg-red-500 hover:bg-red-600 text-white";
+      case "outline":
+        return "bg-transparent text-gray-700 dark:text-gray-300 border border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-800";
+      default:
+        return "bg-orange-500 hover:bg-orange-600 text-white";
     }
-
-    if (variant === "secondary") {
-      return {
-        ...baseStyle,
-        background: "white",
-        color: "#ff6b35",
-        border: "2px solid #ff6b35",
-        boxShadow: "none",
-      };
-    }
-
-    if (variant === "outline") {
-      return {
-        ...baseStyle,
-        background: "transparent",
-        color: "#2d3748",
-        border: "2px solid #e2e8f0",
-        boxShadow: "none",
-      };
-    }
-
-    return baseStyle;
   };
+
+  const getSizeClasses = () => {
+    switch (size) {
+      case "sm":
+        return "px-3 py-1.5 text-xs";
+      case "md":
+        return "px-4 py-2.5 text-sm";
+      case "lg":
+        return "px-6 py-3 text-base";
+      default:
+        return "px-4 py-2.5 text-sm";
+    }
+  };
+
+  const baseClasses = `
+    rounded-lg 
+    font-medium 
+    transition-colors 
+    flex 
+    items-center 
+    justify-center 
+    gap-2
+    ${fullWidth ? "w-full" : ""}
+    ${disabled ? "opacity-50 cursor-not-allowed" : "cursor-pointer"}
+  `;
+
+  const variantClasses = getVariantClasses();
+  const sizeClasses = getSizeClasses();
 
   return (
     <button
       type={type}
       onClick={onClick}
       disabled={disabled}
-      style={getButtonStyle()}
-      onMouseEnter={(e) => {
-        if (!disabled) {
-          e.currentTarget.style.transform = "translateY(-2px)";
-          if (variant === "primary") {
-            e.currentTarget.style.boxShadow = "0 6px 20px rgba(255, 107, 53, 0.4)";
-          }
-        }
-      }}
-      onMouseLeave={(e) => {
-        if (!disabled) {
-          e.currentTarget.style.transform = "translateY(0)";
-          if (variant === "primary") {
-            e.currentTarget.style.boxShadow = "0 4px 15px rgba(255, 107, 53, 0.3)";
-          }
-        }
-      }}
+      className={`${baseClasses} ${variantClasses} ${sizeClasses} ${className}`.trim()}
+      {...props}
     >
       {children}
     </button>

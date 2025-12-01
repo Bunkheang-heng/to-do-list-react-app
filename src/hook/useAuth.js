@@ -8,9 +8,17 @@ export const useAuth = () => {
   useEffect(() => {
     const checkAuth = () => {
       try {
+        // Check if user is authenticated using the auth service
+        const isAuth = authService.isAuthenticated();
+        if (isAuth) {
         const currentUser = authService.getCurrentUser();
         if (currentUser) {
           setUser(currentUser);
+          } else {
+            // Token exists but user data is missing, clear session
+            authService.logout();
+            setUser(null);
+          }
         } else {
           setUser(null);
         }
@@ -27,4 +35,6 @@ export const useAuth = () => {
 
   return { user, loading, isAuthenticated: !!user };
 };
+
+export default useAuth; 
 

@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { FaPlus, FaEdit, FaCheck, FaTimes } from 'react-icons/fa';
+import { FaPlus, FaEdit, FaCheck, FaTimes, FaCalendarAlt } from 'react-icons/fa';
 
 export default function TaskModal({ isOpen, onClose, formData, editingTask, onSubmit, onInputChange }) {
   useEffect(() => {
@@ -88,6 +88,7 @@ export default function TaskModal({ isOpen, onClose, formData, editingTask, onSu
               />
             </div>
 
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
             <div>
               <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
                 Priority Level
@@ -102,6 +103,24 @@ export default function TaskModal({ isOpen, onClose, formData, editingTask, onSu
                 <option value="medium">Medium Priority</option>
                 <option value="high">High Priority</option>
               </select>
+              </div>
+
+              <div>
+                <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
+                  <span className="flex items-center gap-2">
+                    <FaCalendarAlt className="text-orange-500 dark:text-orange-400" />
+                    Due Date
+                  </span>
+                </label>
+                <input
+                  type="date"
+                  name="dueDate"
+                  value={formData.dueDate || ''}
+                  onChange={onInputChange}
+                  min={new Date().toISOString().split('T')[0]}
+                  className="w-full px-4 py-3 border-2 border-gray-200 dark:border-gray-700 rounded-xl bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:border-orange-500 dark:focus:border-orange-400 transition-colors shadow-sm cursor-pointer"
+                />
+              </div>
             </div>
 
             <div className="flex gap-3 pt-2">

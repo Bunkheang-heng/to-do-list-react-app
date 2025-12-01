@@ -1,7 +1,6 @@
-import React, { useState } from "react";
+import React from "react";
 import { useNavigate } from "react-router-dom";
 import { 
-  FaSearch, 
   FaTasks, 
   FaCheckCircle, 
   FaCircle,
@@ -19,20 +18,12 @@ const Home = () => {
   const { user } = useAuth();
   const { tasks, activeTasksCount, completedTasksCount } = useTasks(user?.id);
   const greeting = useGreeting();
-  const [searchQuery, setSearchQuery] = useState('');
   const navigate = useNavigate();
 
   const recentTasks = tasks
     .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
     .slice(0, 5);
 
-  const handleSearch = () => {
-    if (searchQuery.trim()) {
-      navigate('/task', { state: { searchQuery: searchQuery.trim() } });
-    } else {
-      navigate('/task');
-    }
-  };
 
   return (
     <section className="flex flex-col gap-8 max-w-6xl mx-auto w-full px-4 py-6">
@@ -56,28 +47,6 @@ const Home = () => {
             <FaTasks className="text-3xl text-orange-600 dark:text-orange-400" />
           </div>
         </div>
-      </div>
-
-      {/* Search Bar */}
-      <div className="relative">
-        <input
-          type="text"
-          value={searchQuery}
-          onChange={(e) => setSearchQuery(e.target.value)}
-          onKeyPress={(e) => e.key === 'Enter' && handleSearch()}
-          className="w-full rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 text-gray-900 dark:text-white placeholder:text-gray-400 dark:placeholder:text-gray-500 px-4 py-3 pl-11 focus:outline-none focus:ring-2 focus:ring-orange-500/20 focus:border-orange-500 dark:focus:border-orange-400 transition-all"
-          placeholder="Search tasks..."
-        />
-        <FaSearch className="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400 dark:text-gray-500 text-sm" />
-        {searchQuery && (
-          <button
-            onClick={handleSearch}
-            className="absolute right-2 top-1/2 -translate-y-1/2 px-4 py-1.5 bg-orange-500 hover:bg-orange-600 text-white rounded-md text-sm font-medium transition-colors flex items-center gap-1.5"
-          >
-            Search
-            <FaArrowRight className="text-xs" />
-          </button>
-        )}
       </div>
 
       {/* Statistics Cards */}
