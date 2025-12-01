@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { FaCalendarCheck, FaBell, FaUsers, FaChartBar } from 'react-icons/fa';
 import helloGif from '../assets/image/gif/hello.gif';
+import HeroDoodles from "./HeroDoodles";
 
 export default function Hero() {
   const [isVisible, setIsVisible] = useState(false);
@@ -43,10 +44,25 @@ export default function Hero() {
         flexDirection: "column",
         alignItems: "center",
         justifyContent: "center",
+        position: "relative",
+        overflow: "visible"
       }}
     >
+      {/* Decorative stickers behind content */}
+      <div
+        aria-hidden="true"
+        style={{
+          position: "absolute",
+          inset: 0,
+          zIndex: 0,
+          pointerEvents: "none"
+        }}
+      >
+        <HeroDoodles />
+      </div>
+
       {/* Main Hero Content */}
-      <div style={{ maxWidth: "1200px", width: "100%", margin: "0 auto" }}>
+      <div style={{ position: "relative", zIndex: 10, maxWidth: "1200px", width: "100%", margin: "0 auto" }}>
         {/* Section Header */}
         <div 
           className="hero-header"
@@ -92,7 +108,7 @@ export default function Hero() {
           className="hero-features"
           style={{
             display: "grid",
-            gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))",
+            gridTemplateColumns: "repeat(2, minmax(0, 1fr))",
             gap: "32px",
             marginBottom: "60px",
           }}
@@ -169,6 +185,10 @@ export default function Hero() {
           .hero-cta {
             opacity: 0;
             transform: translateY(40px);
+          }
+
+          @ media (max-width: 640px) {
+            .hero-features { grid-template-columns: 1fr; }
           }
         `}
       </style>
